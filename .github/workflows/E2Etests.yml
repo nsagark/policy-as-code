@@ -102,3 +102,15 @@ jobs:
           set -e
           #chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
           chainsaw test --config .chainsaw.yaml Policies/disallow-host-namespaces --no-color=false
+      - name: Push policies to cluster via argo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          git config user.name "nsagark"
+          git config user.email "sagar@nirmata.com" 
+          cp -r "Policies/*/*.yaml" "Policies/argo-policies/"
+          git add "Policies/argo-policies"
+          git commit -m "Copy files to argocd folder"
+          git push          
+          
