@@ -110,7 +110,7 @@ jobs:
           git config user.name "nsagark"
           git config user.email "sagar@nirmata.com" 
           cp -r "Policies/disallow-host-namespaces/disallow-host-namespaces.yaml" "argo-policies/"
-          git add "Policies/argo-policies"
+          git add "argo-policies"
           git commit -m "Copy files to argocd folder"
           git push          
           
