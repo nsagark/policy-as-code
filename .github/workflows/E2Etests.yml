@@ -104,7 +104,7 @@ jobs:
           chainsaw test --config .chainsaw.yaml Policies/disallow-host-namespaces --no-color=false
       - name: Push policies to cluster via argo
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MYGITHUB_TOKEN }}
         run: |
           set -e
           git config user.name "nsagark"
