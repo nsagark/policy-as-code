@@ -85,11 +85,11 @@ jobs:
           set -e
           kyverno version
           kyverno test Policies/disallow-host-namespaces/.kyverno-test
-      - name: Install kyverno policies
-        run: |
-          set -
-          kubectl apply -k https://github.com/nirmata/kyverno-policies/pod-security/enforce
-          sleep 30
+      # - name: Install kyverno policies
+      #   run: |
+      #     set -
+      #     kubectl apply -k https://github.com/nirmata/kyverno-policies/pod-security/enforce
+      #     sleep 30
  #     - name: Run k6 test
  #       run: |
  #         cd load-tests/k6
