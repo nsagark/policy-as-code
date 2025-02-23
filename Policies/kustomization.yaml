@@ -1,0 +1,4 @@
+resources:
+  - deny-force-delete/deny-force-delete.yaml 
+  - mutate-registry/region-cm.yaml
+  - mutate-registry/mutate-registry.yaml

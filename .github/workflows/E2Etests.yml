@@ -1,0 +1,103 @@
+name: E2E Tests
+
+permissions:
+  contents: read
+  
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chainsaw:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version:
+          - name: v1.28
+            version: v1.28.7
+        tests:
+          - ^disallow-host-namespaces$
+    runs-on: ubuntu-latest
+    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - name: Setup Go
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version: ~1.21.1
+          cache: false
+      - name: Install Tools
+        run: |
+          set -e
+          curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      - name: Install kind
+        shell: bash
+        run: |
+          set -e
+          # For AMD64 / x86_64
+          [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+          # For ARM64
+          [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+      - name: Install Kyverno CLI v1.12.5 
+        uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+        with:
+          release: 'v1.12.5'
+      - name: Create kind cluster
+        run: |
+          set -e
+          kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
+#      - name: Setup K6
+#        uses: grafana/setup-k6-action@v1
+#      - name: Run baseline k6 test without installing Kyverno and Kyverno Policies
+#        run: |
+#          cd load-tests/k6
+#          ./start-rhb-k6.sh
+#          cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
+      - name: Install latest kyverno
+        run: |
+          set -e
+          kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+      - name: Wait for kyverno ready
+        run: |
+          set -e
+          kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+      - name: Install CRDs
+        run: |
+          set -e
+          kubectl apply -f ./.chainsaw/crds
+      - name: Install Chainsaw
+        uses: kyverno/action-install-chainsaw@dd64b5d7b2b7d36fdf701d48ac8b216aa94414db # v0.2.4
+      - name: Test with Kyverno CLI
+        run: |
+          set -e
+          kyverno version
+          kyverno test Policies/disallow-host-namespaces/.kyverno-test
+      - name: Install kyverno policies
+        run: |
+          set -
+          kubectl apply -k https://github.com/nirmata/kyverno-policies/pod-security/enforce
+          sleep 30
+ #     - name: Run k6 test
+ #       run: |
+ #         cd load-tests/k6
+ #         ./start-rhb-k6.sh
+ #         cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
+      - name: Test with Chainsaw
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
