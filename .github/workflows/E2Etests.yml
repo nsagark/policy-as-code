@@ -9,12 +9,12 @@ on:
     branches:
       - 'main'
     paths-ignore:
-      - 'folder_to_ignore/**'
+      - 'argo-policies/**'
   pull_request:
     branches:
       - 'main'   
     paths-ignore:
-      - 'folder_to_ignore/**'      
+      - 'argo-policies/**'      
      
 
 concurrency:
