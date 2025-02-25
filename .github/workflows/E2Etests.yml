@@ -8,9 +8,14 @@ on:
   push:
     branches:
       - 'main'
+    paths-ignore:
+      - 'folder_to_ignore/**'
   pull_request:
     branches:
       - 'main'   
+    paths-ignore:
+      - 'folder_to_ignore/**'      
+     
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
