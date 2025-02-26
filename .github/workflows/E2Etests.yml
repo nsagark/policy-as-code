@@ -66,7 +66,7 @@ jobs:
           kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
 #      - name: Setup K6
 #        uses: grafana/setup-k6-action@v1
-#      - name: Run baseline k6 test without installing Kyverno and Kyverno Policies
+#      - name: Run baseline k6 test without installing Kyverno and Kyverno Policies.
 #        run: |
 #          cd load-tests/k6
 #          ./start-rhb-k6.sh
