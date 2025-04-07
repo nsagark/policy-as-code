@@ -61,7 +61,7 @@ jobs:
           mkdir -p remediated-yamls
           
           cp -r "resources" "remediated-yamls"
-          nctl scan kubernetes --policies Policies -r resources --remediate patch
+          nctl scan kubernetes --policies Policies -r resources --remediate show
           
           # # Check if there are any changes to commit
           # if git status --porcelain | grep -q "remediated-yamls"; then
