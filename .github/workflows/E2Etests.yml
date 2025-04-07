@@ -59,10 +59,11 @@ jobs:
           cp -r "resources" "remediated-yamls"
           nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch
           git add "remediated-yamls"
-          git commit -m "remediated resources using ai autoremediation" || echo "No changes to commit"
+          git commit -s -m "remediated resources using ai autoremediation" || echo "No changes to commit"
+          git push origin ai-remediations
 
-          # Setup remote with token
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          # # Setup remote with token
+          # git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
 
-          git push origin HEAD:${{ github.ref }}        
+          # git push origin HEAD:${{ github.ref }}        
           
