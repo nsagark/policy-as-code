@@ -61,7 +61,13 @@ jobs:
           mkdir -p remediated-yamls
           
           cp -r "resources" "remediated-yamls"
-          nctl scan kubernetes --policies Policies -r resources --remediate show
+          # nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch
+          echo "hello world" > sample.txt
+          git add .
+          git commit -s -m "remediated resources using AI autoremediation"
+          git push
+
+          #echo "hello world" > sample.txt
           
           # # Check if there are any changes to commit
           # if git status --porcelain | grep -q "remediated-yamls"; then
