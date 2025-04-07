@@ -34,6 +34,7 @@ jobs:
       - name: nctl-scan-installer
         run: |
           set -e 
+          rm -rf nctl
           mkdir nctl && cd nctl
           curl -LO https://nirmata-downloads.s3.us-east-2.amazonaws.com/nctl/nctl_4.5.0/nctl_4.5.0_linux_amd64.zip
           unzip nctl_4.5.0_linux_amd64.zip
@@ -60,7 +61,7 @@ jobs:
           
           cp -r resources remediated-yamls
           nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch
-          echo "hello world" > sample.txt
+          
           git add .
           git commit -s -m "remediated resources using AI autoremediation"
           git push
