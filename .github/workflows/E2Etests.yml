@@ -65,7 +65,7 @@ jobs:
           
           # Check if there are any changes to commit
           if git status --porcelain | grep -q "remediated-yamls"; then
-            git add "remediated-yamls"
+            git add .
             git commit -s -m "remediated resources using ai autoremediation"
             git push
           else
