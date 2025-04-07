@@ -38,7 +38,7 @@ jobs:
           curl -LO https://nirmata-downloads.s3.us-east-2.amazonaws.com/nctl/nctl_4.5.0/nctl_4.5.0_linux_amd64.zip
           unzip nctl_4.5.0_linux_amd64.zip
           chmod 755 nctl
-          sudo mv nctl /urs/local/bin
+          sudo mv nctl /usr/local/bin
 
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
 
