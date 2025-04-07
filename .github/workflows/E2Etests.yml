@@ -9,12 +9,12 @@ on:
     branches:
       - 'ai-remediations'
     paths-ignore:
-      - 'argo-policies/**'
+      - 'remediated-yamls/**'
   pull_request:
     branches:
       - 'ai-remediations'   
     paths-ignore:
-      - 'argo-policies/**'      
+      - 'remediated-yamls/**'      
      
 
 concurrency:
@@ -47,17 +47,6 @@ jobs:
 
       - name: NCTl login
         run: nctl login --url https://www.nirmata.io --userid sagar@nirmata.com --token ${{ secrets.NIRMATA_TOKEN }}
-      # - name: NCTL Scan - Kubernetes
-      #   run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s --audit-as-warn
-        
-      # - name: NCTL Scan - Kubernetes
-      #   run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s        
-
-      - name: NCTL Scan - Kubernetes Detailed Report
-        run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s --details
-
-      # - name: NCTL Scan - Kubernetes Detailed Report
-      #   run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s --audit-as-warn --details
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Push policies to cluster via argo
@@ -67,8 +56,9 @@ jobs:
           set -e
           git config user.name "nsagark"
           git config user.email "sagar@nirmata.com" 
-          cp -r "Policies/disallow-host-namespaces/disallow-host-namespaces.yaml" "argo-policies/"
-          git add "argo-policies"
-          git commit -m "Copy files to argo folder"
+          cp -r "resources "remediated-yamls"
+          nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch
+          git add "remediated-yamls"
+          git commit -m "remediated resources using ai autoremediation"
           git push          
           
