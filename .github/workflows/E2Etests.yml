@@ -7,12 +7,12 @@ on:
   workflow_dispatch: {}
   push:
     branches:
-      - 'main'
+      - 'ai-remediations'
     paths-ignore:
       - 'argo-policies/**'
   pull_request:
     branches:
-      - 'main'   
+      - 'ai-remediations'   
     paths-ignore:
       - 'argo-policies/**'      
      
@@ -24,6 +24,7 @@ concurrency:
 jobs:
   NCTL-Scan-K8s:
     runs-on: ubuntu-latest
+    environment: test
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
