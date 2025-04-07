@@ -56,9 +56,7 @@ jobs:
           set -e
           git config --global user.name "nsagark"
           git config --global user.email "sagar@nirmata.com" 
-          echo
-
-          mkdir -p remediated-yamls
+          rm -rf remediated-yamls
           
           cp -r resources remediated-yamls
           nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch
