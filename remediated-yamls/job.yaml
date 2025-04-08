@@ -15,8 +15,8 @@ spec:
       containers:
       - name: nginx
         image: nginx:latest
-        resources: {}
         securityContext:
           allowPrivilegeEscalation: false
+        resources: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Never
