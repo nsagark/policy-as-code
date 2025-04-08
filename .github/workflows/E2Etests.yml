@@ -54,13 +54,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MYGITHUB_TOKEN }}
         run: |
-          set -e
           git config --global user.name "nsagark"
           git config --global user.email "sagar@nirmata.com" 
           rm -rf remediated-yamls
           
           cp -r resources remediated-yamls;
-          nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch;          
+          nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch --details -v 10
+          echo "NCTL exit code: $?"
           git add remediated-yamls
           git commit -s -m "remediated resources using AI autoremediation"
           git push
