@@ -7,12 +7,12 @@ on:
   workflow_dispatch: {}
   push:
     branches:
-      - 'main'
+      - 'ai-remediations'
     paths-ignore:
       - 'remediated-yamls/**'
   pull_request:
     branches:
-      - 'main'   
+      - 'ai-remediations'   
     paths-ignore:
       - 'remediated-yamls/**'      
      
