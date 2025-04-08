@@ -1,21 +1,16 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: nginx
-  labels:
-    app: nginx
+  name: nginx-job
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nginx
+  backoffLimit: 4
   template:
     metadata:
       labels:
         app: nginx
         app.kubernetes.io/name: nginx
-        app.kubernetes.io/instance: nginx
-        app.kubernetes.io/component: webserver
+        app.kubernetes.io/instance: nginx-job
+        app.kubernetes.io/component: web-server
     spec:
       containers:
       - name: nginx
@@ -24,4 +19,4 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
       dnsPolicy: ClusterFirst
-      restartPolicy: Always
+      restartPolicy: Never

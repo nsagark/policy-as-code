@@ -1,10 +1,14 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: nginx
+  name: nginx-statefulset
   labels:
     app: nginx
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/instance: nginx-statefulset
+    app.kubernetes.io/component: webserver
 spec:
+  serviceName: "nginx"
   replicas: 1
   selector:
     matchLabels:
@@ -14,7 +18,7 @@ spec:
       labels:
         app: nginx
         app.kubernetes.io/name: nginx
-        app.kubernetes.io/instance: nginx
+        app.kubernetes.io/instance: nginx-statefulset
         app.kubernetes.io/component: webserver
     spec:
       containers:
