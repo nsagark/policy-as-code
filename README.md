@@ -1,4 +1,4 @@
-# nctl left with security
+# Shift left with security
 
 ## Why Shift-Left?
 Shift left security is crucial as it emphasizes integrating security practices earlier in the software development lifecycle, allowing for proactive identification and mitigation of vulnerabilities and misconfigurations. By addressing security concerns from the outset, organizations can minimize risks, reduce costs associated with fixing issues later in the development process, and ultimately enhance the overall security posture of their products or systems.
