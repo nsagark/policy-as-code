@@ -30,8 +30,8 @@ spec:
       pattern:
         spec:
           =(ephemeralContainers):
-          - image: "eu.foo.io/* | bar.io/*"
+          - image: "index.docker.io/* | ghcr.io/*"
           =(initContainers):
-          - image: "eu.foo.io/* | bar.io/*"
+          - image: "index.docker.io/* | ghcr.io/*"
           containers:
-          - image: "eu.foo.io/* | bar.io/*"
+          - image: "index.docker.io/* | ghcr.io/*"
