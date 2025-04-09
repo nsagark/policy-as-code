@@ -8,15 +8,15 @@ spec:
     metadata:
       labels:
         app: nginx
-        app.kubernetes.io/name: nginx
-        app.kubernetes.io/instance: nginx-job
-        app.kubernetes.io/component: web-server
+        app.kubernetes.io/name: nginx-job
+        app.kubernetes.io/instance: nginx
+        app.kubernetes.io/component: webserver
     spec:
       containers:
       - name: nginx
         image: nginx:latest
+        resources: {}
         securityContext:
           allowPrivilegeEscalation: false
-        resources: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Never

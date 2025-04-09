@@ -12,7 +12,7 @@ spec:
             app: nginx
             app.kubernetes.io/name: nginx
             app.kubernetes.io/instance: nginx-cronjob
-            app.kubernetes.io/component: cron-service
+            app.kubernetes.io/component: cronjob
         spec:
           containers:
           - name: nginx

@@ -4,9 +4,6 @@ metadata:
   name: nginx
   labels:
     app: nginx
-    app.kubernetes.io/name: nginx
-    app.kubernetes.io/instance: nginx
-    app.kubernetes.io/component: web-server
 spec:
   replicas: 1
   selector:
