@@ -31,7 +31,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: nctl-scan-installer
+      - name: NCTL install
         run: |
           set -e 
           rm -rf nctl
@@ -41,16 +41,13 @@ jobs:
           chmod 755 nctl
           sudo mv nctl /usr/local/bin
 
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-
       - name: Check nctl version
         run: nctl version
 
       - name: NCTl login
         run: nctl login --url https://www.nirmata.io --userid sagar@nirmata.com --token ${{ secrets.NIRMATA_TOKEN }}
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Push policies to cluster via argo
+      - name: Remediation of resources using NCTL
         env:
           GITHUB_TOKEN: ${{ secrets.MYGITHUB_TOKEN }}
         run: |
