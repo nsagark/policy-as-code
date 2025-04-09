@@ -4,9 +4,6 @@ metadata:
   name: nginx-statefulset
   labels:
     app: nginx
-    app.kubernetes.io/name: nginx
-    app.kubernetes.io/instance: nginx-statefulset
-    app.kubernetes.io/component: webserver
 spec:
   serviceName: "nginx"
   replicas: 1

@@ -15,7 +15,7 @@ spec:
         app: nginx
         app.kubernetes.io/name: nginx
         app.kubernetes.io/instance: nginx
-        app.kubernetes.io/component: web-server
+        app.kubernetes.io/component: webserver
     spec:
       containers:
       - name: nginx
