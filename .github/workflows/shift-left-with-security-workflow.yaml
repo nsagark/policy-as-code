@@ -17,22 +17,19 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: nctl-scan-installer
+      - name: NCTL install
         uses: nirmata/action-install-nctl-scan@v0.0.4
 
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
 
-      - name: Check nctl version
+      - name: Check NCTL version
         run: nctl version
 
       # - name: NCTL Scan - Kubernetes
-      #   run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s --audit-as-warn
-        
-      # - name: NCTL Scan - Kubernetes
-      #   run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s        
+      #   run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s --audit-as-warn       
 
       - name: NCTL Scan - Kubernetes Detailed Report
-        run: nctl scan kubernetes --policies best-practices --resources resources --details --audit-as-warn
+        run: nctl scan kubernetes --policies best-practices --resources resources --details
 
       # - name: NCTL Scan - Kubernetes Detailed Report
       #   run: nctl scan kubernetes --policies controls/pod-security --resources config-files/k8s --audit-as-warn --details
