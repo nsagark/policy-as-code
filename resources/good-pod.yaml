@@ -6,14 +6,15 @@ metadata:
   labels:
     app: myapp
     environment: production  # Complies with 'require-labels'
+    app.kubernetes.io/name: production
 spec:
   containers:
     - name: myapp-container
-      image: myregistry.com/myapp:v1.0.0  # Complies with 'disallow-latest-tag'
+      image: ghcr.io/myapp:v1.0.0  # Complies with 'disallow-latest-tag'
       securityContext:
         readOnlyRootFilesystem: true  # Complies with 'require-ro-rootfs'
         capabilities:
-          drop: ["ALL"]  # Complies with 'require-drop-all'
+          drop: ["ALL", "CAP_NET_RAW"]  # Complies with 'require-drop-all'
       resources:
         limits:
           memory: "512Mi"
