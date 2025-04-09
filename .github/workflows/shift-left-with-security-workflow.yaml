@@ -3,10 +3,10 @@ run-name: ${{ github.actor }} has triggered Scan Action 🚀
 on:
   pull_request:
     branches:
-      - "main"
+      - "shift-left-with-security"
   push:
     branches:
-      - "main"
+      - "shift-left-with-security"
 
 jobs:
   NCTL-Scan-K8s:
