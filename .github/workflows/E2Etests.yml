@@ -56,8 +56,7 @@ jobs:
           rm -rf remediated-yamls
           
           cp -r resources remediated-yamls;
-          nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch --details -v 10 && echo "❌ NCTL scan passed"
-          echo "NCTL exit code: $?"
+          nctl scan kubernetes --policies Policies -r remediated-yamls --remediate patch --details -v 10 && echo "NCTL scan passed"
           git add remediated-yamls
           git commit -s -m "remediated resources using AI autoremediation"
           git push
