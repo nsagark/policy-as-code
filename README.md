@@ -1,45 +1,23 @@
-# Private Repostitory for Robinhood Proof-of-Value (PoV)
+# nctl-shift-left
 
-## Deliverables
+## Why Shift-Left?
+Shift left security is crucial as it emphasizes integrating security practices earlier in the software development lifecycle, allowing for proactive identification and mitigation of vulnerabilities and misconfigurations. By addressing security concerns from the outset, organizations can minimize risks, reduce costs associated with fixing issues later in the development process, and ultimately enhance the overall security posture of their products or systems.
 
-### Validation Policy
+## How does the Nirmata CLI (nctl) help?
+Integrating Nirmata CLI (`nctl`) into the Continuous Integration (CI) pipeline ensures rapid identification of misconfigurations in Kubernetes manifests, Dockerfiles, and Terraform files, preempting potential issues before they escalate. By providing automated remediations, it streamlines the process of fixing vulnerabilities, thereby reducing delays and ensuring a smoother path to production. This proactive approach enhances the reliability and security of deployments, ultimately accelerating the time-to-market for software releases.
 
-A sample validation policy to block `delete` operations with `--grace-period=0` and `--force`:
+## Nirmata CLI
+Learn about the CLI [here](https://docs.nirmata.io/docs/npmk/nctl/).
 
-* [deny-force-delete](Policies/deny-force-delete/README.md)
+## Using nctl with GitHub Action
+Integrating nctl with GitHub Actions (or other pipelines) adds a critical check in the deployment process. `nctl` scans resources against customizable policies, enabling teams to enforce best practices and security standards. With the flexibility to either fail the pipeline or log issues without blocking it, nctl ensures thorough validation while accommodating varying project requirements.
 
-### Mutation Policy
+### Use the GitHub Action
+Use the readily available [GitHub Action](https://github.com/marketplace/actions/nctl-scan-installer) to install `nctl`.
 
-A sample mutation policy used to configure an ECR registry region:
+### Example Workflows
+Checkout the examples in [.github/workflows](./.github/workflows) directory on how to use `nctl` in action!
 
-* [mutate-registry](Policies/mutate-registry/README.md)
+## Have Questions?
+If you have any questions on how to use nctl in your CI pipeline, or if you want to see more features, feel free to create an issue in this repository, or contact us at [support@nirmata.com](support@nirmata.com)
 
-### Policy e2e tests with Kyverno Chainsaw
-
-Automated e2e tests with Kyverno Chainsaw to test policy behaviors are available for each policy:
-
-* [deny-force-delete](Policies/deny-force-delete/.chainsaw-test/chainsaw-test.yaml)
-* [mutate-registry](Policies/mutate-registry/.chainsaw-test/chainsaw-test.yaml)
-
-These tests are run on each commit with a CI action:
-
-* [CI workflows](.github/workflows/E2Etests.yml)
-
-### Deploying policies with ArgoCD
-
-Automated deployment of policies to ArgoCD managed clusters:
-
-* [argocd](argocd/README.md)
-
-### Upgrade between different versions of Kyverno and OSS & N4K
-
-
-Test upgrade between diffeent versions of Kyverno and also between various versions of N4K and OSS. Run chainsaw tests after each upgrade:
-
-* [upgrade-tests](upgrade-tests/README.md)
-
-### Load and Scale tests with K6.io
-
-Automated load and scale tests with K6.io:
-
-* [load-tests](load-tests/README.md)
