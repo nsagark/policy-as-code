@@ -12,7 +12,7 @@ kubectl apply -f policies/mutate-registry/
 
 ## Test
 
-### Pod with a ECR image
+### Pod with a ECR image.
 
 ```sh
 kubectl run test --image=844333597536.dkr.ecr.us-west-1.amazonaws.com/kyverno-demo:v1 --dry-run=server -o yaml | grep "image: "
