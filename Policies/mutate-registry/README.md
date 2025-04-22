@@ -19,7 +19,7 @@ kubectl run test --image=844333597536.dkr.ecr.us-west-1.amazonaws.com/kyverno-de
   - image: 844333597536.dkr.ecr.us-west-2.amazonaws.com/kyverno-demo:v1
 ```
 
-### Pod with a non-ECR image
+### Pod with a non-ECR image.
 
 ```sh
 kubectl run test --image=nginx --dry-run=server -o yaml | grep "image: "
