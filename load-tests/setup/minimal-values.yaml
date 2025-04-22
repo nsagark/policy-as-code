@@ -1,0 +1,24 @@
+# Background controller configuration
+backgroundController:
+  enabled: false
+
+# Cleanup controller configuration   
+cleanupController:
+  enabled: false
+
+# Reports controller configuration   
+reportsController:
+  enabled: false
+
+# Features
+features:
+  admissionReports:
+    # -- Enables the feature
+    enabled: false
+  omitEvents:
+    # -- Events which should not be emitted (possible values `PolicyViolation`, `PolicyApplied`, `PolicyError`, and `PolicySkipped`)
+    eventTypes:
+      - PolicyApplied
+      - PolicySkipped
+      - PolicyViolation
+      - PolicyError

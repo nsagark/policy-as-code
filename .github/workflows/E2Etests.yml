@@ -1,21 +1,16 @@
 name: E2E Tests
 
 permissions:
-  contents: write
+  contents: read
   
 on:
   workflow_dispatch: {}
-  push:
-    branches:
-      - 'main'
-    paths-ignore:
-      - 'argo-policies/**'
+  # push:
+  #   branches:
+  #     - 'pac-demo'
   pull_request:
     branches:
-      - 'main'   
-    paths-ignore:
-      - 'argo-policies/**'      
-     
+      - 'pac-demo'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -30,7 +25,8 @@ jobs:
           - name: v1.28
             version: v1.28.7
         tests:
-          - ^disallow-host-namespaces$
+          - ^deny-force-delete$
+          - ^mutate-registry$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
@@ -50,7 +46,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          ## For AMD64 / x86_64
+          # For AMD64 / x86_64
           [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
           # For ARM64
           [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
@@ -64,13 +60,13 @@ jobs:
         run: |
           set -e
           kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
-#      - name: Setup K6
-#        uses: grafana/setup-k6-action@v1
-#      - name: Run baseline k6 test without installing Kyverno and Kyverno Policies.
-#        run: |
-#          cd load-tests/k6
-#          ./start-rhb-k6.sh
-#          cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+      - name: Run baseline k6 test without installing Kyverno and Kyverno Policies
+        run: |
+          cd load-tests/k6
+          ./start-rhb-k6.sh
+          cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
       - name: Install latest kyverno
         run: |
           set -e
@@ -89,33 +85,21 @@ jobs:
         run: |
           set -e
           kyverno version
-          kyverno test Policies/disallow-host-namespaces/.kyverno-test
-      # - name: Install kyverno policies
-      #   run: |
-      #     set -
-      #     kubectl apply -k https://github.com/nirmata/kyverno-policies/pod-security/enforce
-      #     sleep 30
- #     - name: Run k6 test
- #       run: |
- #         cd load-tests/k6
- #         ./start-rhb-k6.sh
- #         cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
+          kyverno test Policies/deny-force-delete/.kyverno-test
+          kyverno test Policies/mutate-registry/.kyverno-test
+      - name: Install kyverno policies
+        run: |
+          set -
+          kubectl apply -k https://github.com/nirmata/kyverno-policies/pod-security/enforce
+          sleep 30
+      - name: Run k6 test
+        run: |
+          cd load-tests/k6
+          ./start-rhb-k6.sh
+          cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
       - name: Test with Chainsaw
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          #chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
-          chainsaw test --config .chainsaw.yaml Policies/disallow-host-namespaces --no-color=false
-      - name: Push policies to cluster via argo
-        env:
-          GITHUB_TOKEN: ${{ secrets.MYGITHUB_TOKEN }}
-        run: |
-          set -e
-          git config user.name "nsagark"
-          git config user.email "sagar@nirmata.com" 
-          cp -r "Policies/disallow-host-namespaces/disallow-host-namespaces.yaml" "argo-policies/"
-          git add "argo-policies"
-          git commit -m "Copy files to argo folder"
-          git push          
-          
+          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false

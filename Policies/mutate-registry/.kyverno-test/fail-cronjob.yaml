@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bad-cronjob
+spec:
+  schedule: "*/5 * * * *" 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: bad-cronjob
+            image: busybox
+            command:
+            - sh
+            - -c
+            - echo "Running cron job"; date; sleep 30
+          restartPolicy: Never
