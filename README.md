@@ -1,4 +1,4 @@
-# Private Repostitory for Robinhood Proof-of-Value (PoV)
+# Private Repostitory for  Proof-of-Value (PoV)
 
 ## Deliverables
 

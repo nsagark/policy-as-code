@@ -119,7 +119,7 @@ Clone this repo and go to the k6 folder
 #### Baseline Test without any policies with 500VUs and 5000 ITERATIONS
 
 ```sh
-cd robinhood/load-tests/k6
+cd policy-as-code/load-tests/k6
 ./start-rbh.sh tests/kyverno-pods-rbh-dryrun-baseline.js 500 5000
 ```
 
@@ -130,14 +130,14 @@ Capture the avg `http_req_duration` and `iterations per second` from the log fil
 From the repo, go to `extra-policies` folder and deploy the policies. Start with 10 policies/10 rules.
 
 ```sh
-cd robinhood/load-tests/k6/extra-policies
+cd policy-as-code/load-tests/k6/extra-policies
 
 for i in $(seq 1 10); do kubectl create -f require-labels-${i}.yaml; done
 ```
 Make sure the policies are all in `Ready` state and they are in `Enforce` mode. Next, run the K6 test.
 
 ```sh
-cd robinhood/load-tests/k6
+cd policy-as-code/load-tests/k6
 ./start-rbh.sh tests/kyverno-pods-rbh-dryrun.js 500 5000
 ```
 

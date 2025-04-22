@@ -48,4 +48,4 @@ kubectl apply -f <filename.yaml> --server-side=true
 
 ## Sample Run
 
-https://github.com/nirmata/robinhood-pov/actions/runs/9529404982/job/26268121426
+https://github.com/nirmata/customer-pov/actions/runs/9529404982/job/26268121426
