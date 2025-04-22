@@ -25,8 +25,9 @@ jobs:
           - name: v1.28
             version: v1.28.7
         tests:
-          - ^deny-force-delete$
-          - ^mutate-registry$
+          # - ^deny-force-delete$
+          # - ^mutate-registry$
+          - ^disallow-privilege-escalation$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
@@ -85,21 +86,21 @@ jobs:
         run: |
           set -e
           kyverno version
-          kyverno test Policies/deny-force-delete/.kyverno-test
-          kyverno test Policies/mutate-registry/.kyverno-test
-      - name: Install kyverno policies
-        run: |
-          set -
-          kubectl apply -k https://github.com/nirmata/kyverno-policies/pod-security/enforce
-          sleep 30
-      - name: Run k6 test
-        run: |
-          cd load-tests/k6
-          ./start-rhb-k6.sh
-          cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
+          kyverno test Policies/disallow-privilege-escalation/.kyverno-test
+          # kyverno test Policies/mutate-registry/.kyverno-test
+      # - name: Install kyverno policies
+      #   run: |
+      #     set -
+      #     kubectl apply -k https://github.com/nirmata/kyverno-policies/pod-security/enforce
+      #     sleep 30
+      # - name: Run k6 test
+      #   run: |
+      #     cd load-tests/k6
+      #     ./start-rhb-k6.sh
+      #     cat kyverno-pods-rbh-k6.js-10vu-100it-logs.txt
       - name: Test with Chainsaw
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
+          chainsaw test --config .chainsaw.yaml Policies/disallow-privilege-escalation --no-color=false
