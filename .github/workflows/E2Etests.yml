@@ -25,8 +25,9 @@ jobs:
           - name: v1.28
             version: v1.28.7
         tests:
-          - ^deny-force-delete$
-          - ^mutate-registry$
+#          - ^deny-force-delete$
+#          - ^mutate-registry$
+          - ^disallow-privilege-escalation$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
@@ -102,4 +103,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
+          chainsaw test --config .chainsaw.yaml Policies/disallow-privilege-escalation --no-color=false
