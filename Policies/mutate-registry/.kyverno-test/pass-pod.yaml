@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+spec:
+  initContainers:
+  - name: good-initcontainer1
+    image: 83765.dkr.ecr.us-west-2.amazonaws.com/my-repository:tag
+  containers:
+  - name: good-container1
+    image: 78043.dkr.ecr.us-west-2.amazonaws.com/my-repository:tag

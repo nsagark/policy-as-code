@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: ecr-image-deployment
+  labels:
+    app: good-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-deploy
+  template:
+    metadata:
+      labels:
+        app: good-deploy
+    spec:
+      containers:
+      - name: ecr-container
+        image: 197643.dkr.ecr.us-east-1.amazonaws.com/my-repository:tag
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+spec:
+  initContainers:
+  - name: good-initcontainer1
+    image: 83765.dkr.ecr.us-east-1.amazonaws.com/my-repository:tag
+  containers:
+  - name: good-container1
+    image: 78043.dkr.ecr.us-east-1.amazonaws.com/my-repository:tag
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: good-cronjob
+spec:
+  schedule: "*/5 * * * *" 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: good-cronjob
+            image: 58364.dkr.ecr.us-east-2.amazonaws.com/my-repository:tag
+            command:
+            - sh
+            - -c
+            - echo "Running cron job"; date; sleep 30
+---
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: noecr-image-deployment
+  labels:
+    app: bad-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-deploy
+  template:
+    metadata:
+      labels:
+        app: bad-deploy
+    spec:
+      containers:
+      - name: noecr-container
+        image: registry.us-east-2.amazonaws.com/nginx:latest
+---
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: noecr-image-deployment2
+  labels:
+    app: bad-deploy2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-deploy2
+  template:
+    metadata:
+      labels:
+        app: bad-deploy2
+    spec:
+      containers:
+      - name: noecr-container2
+        image: nginx:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod
+spec:
+  initContainers:
+  - name: bad-initcontainer1
+    image: nginx:latest
+  containers:
+  - name: bad-container1
+    image: nginx:latest
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bad-cronjob
+spec:
+  schedule: "*/5 * * * *" 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: bad-cronjob
+            image: busybox
+            command:
+            - sh
+            - -c
+            - echo "Running cron job"; date; sleep 30
+          restartPolicy: Never

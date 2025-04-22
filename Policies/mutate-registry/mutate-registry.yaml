@@ -1,0 +1,58 @@
+apiVersion : kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mutate-image
+  annotations:
+    policies.kyverno.io/title: Mutate ECR region 
+    policies.kyverno.io/category: Operations
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26"
+    policies.kyverno.io/description: Update ECR region based on in-cluster ConfigMap    
+spec:
+  schemaValidation: false  # remove in v1.12.x
+  background: false
+  rules:
+  - name: update-region
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          - Deployment
+          - StatefulSet
+          - Job 
+          - CronJob
+          operations:
+          - CREATE
+          - UPDATE
+    context:
+      # fetch region from CM
+      - name: desiredRegion
+        configMap:
+          name: ecr-region
+          namespace: kyverno
+    mutate:
+      foreach:
+      # iterate over all images in the resources
+      - list: "images.*.* | []" 
+        preconditions:
+          all: 
+          # skip non-ECR images 
+          - key: "{{contains (element.registry, '.ecr.')}}"
+            operator: Equals
+            value: true
+        context:
+        # extract region in image reference
+        - name: oldRegion 
+          variable:
+            value: "{{ element.registry | split(@, '.') | [3] }}"
+        # in v1.12.x this is not required, and you can use "element.reference" instead
+        - name: imageReference
+          variable:
+            value: "{{element.registry}}/{{element.path}}:{{element.tag}}"
+        # patch image reference with correct region
+        patchesJson6902: |-
+          - path: "{{ element.jsonPointer }}"
+            op: replace
+            value: "{{ replace_all( '{{imageReference}}', '{{oldRegion}}', '{{desiredRegion.data.region}}') }}"
+

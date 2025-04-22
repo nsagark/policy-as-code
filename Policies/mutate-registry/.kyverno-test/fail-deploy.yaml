@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: noecr-image-deployment
+  labels:
+    app: bad-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-deploy
+  template:
+    metadata:
+      labels:
+        app: bad-deploy
+    spec:
+      containers:
+      - name: noecr-container
+        image: registry.us-east-2.amazonaws.com/nginx:latest

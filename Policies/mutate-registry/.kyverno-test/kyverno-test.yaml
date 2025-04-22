@@ -1,0 +1,52 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: mutate-image
+policies:
+- ../mutate-registry.yaml
+resources: 
+- resources.yaml
+variables: values.yaml
+results:
+- kind: CronJob
+  policy: mutate-image
+  resources:
+  - bad-cronjob
+  patchedResource: fail-cronjob.yaml
+  result: skip
+  rule: update-region
+- kind: Deployment
+  policy: mutate-image
+  resources:
+  - noecr-image-deployment
+  patchedResource: fail-deploy.yaml
+  result: skip
+  rule: update-region
+- kind: Pod
+  policy: mutate-image
+  resources:
+  - bad-pod
+  patchedResource: fail-pod.yaml
+  result: skip
+  rule: update-region
+- kind: CronJob
+  policy: mutate-image
+  resources:
+  - good-cronjob
+  patchedResource: pass-cronjob.yaml
+  result: pass
+  rule: update-region
+- kind: Deployment
+  policy: mutate-image
+  resources:
+  - ecr-image-deployment
+  patchedResource: pass-deploy.yaml
+  result: pass
+  rule: update-region
+- kind: Pod
+  policy: mutate-image
+  resources:
+  - good-pod
+  patchedResource: pass-pod.yaml
+  result: pass
+  rule: update-region

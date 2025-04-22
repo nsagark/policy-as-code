@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: noecr-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: noecr-container
+    image: nginx:latest

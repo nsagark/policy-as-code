@@ -1,0 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+policies:
+- name: mutate-image
+  rules:
+  - name: update-region
+    values:
+      desiredRegion.data.region: us-west-2

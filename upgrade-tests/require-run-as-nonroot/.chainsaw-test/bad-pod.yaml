@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: bad-container
+    image: nginx:latest
