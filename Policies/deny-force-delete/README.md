@@ -25,7 +25,7 @@ spec:
   - name: sample-container
     image: nginx:latest
 ```
-Apply the above pod.yaml file to create a pod.
+Apply the above pod.yaml file to create a pod
 
 ### Delete with --grace-period=0 as a non-admin user
 
