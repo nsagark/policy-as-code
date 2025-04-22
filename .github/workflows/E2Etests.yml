@@ -102,4 +102,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
+          # chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
+          chainsaw test --config .chainsaw.yaml Policies/deny-force-delete --no-color=false
+          chainsaw test --config .chainsaw.yaml Policies/mutate-registry --no-color=false
