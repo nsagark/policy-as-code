@@ -5,9 +5,9 @@ permissions:
   
 on:
   workflow_dispatch: {}
-  push:
-    branches:
-      - 'pac-demo'
+  # push:
+  #   branches:
+  #     - 'pac-demo'
   pull_request:
     branches:
       - 'pac-demo'
