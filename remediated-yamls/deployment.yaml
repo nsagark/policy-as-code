@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 2 # number of replicas
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        app.kubernetes.io/name: nginx
+        app.kubernetes.io/instance: nginx
+        app.kubernetes.io/component: webserver
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
