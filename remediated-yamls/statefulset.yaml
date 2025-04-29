@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-statefulset
+  labels:
+    app: nginx
+spec:
+  serviceName: "nginx"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        app.kubernetes.io/component: web
+        app.kubernetes.io/instance: nginx-1
+        app.kubernetes.io/name: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
