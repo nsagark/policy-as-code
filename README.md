@@ -1,1 +1,1 @@
-# Private Repostitory for Proof-of-Value (PoV)
+# Repostitory for Proof-of-Value (PoV)
