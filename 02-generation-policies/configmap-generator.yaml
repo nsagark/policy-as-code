@@ -1,0 +1,39 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: generate-app-config
+  annotations:
+    policies.kyverno.io/title: Generate Application Config
+    policies.kyverno.io/category: Configuration
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ConfigMap
+    policies.kyverno.io/description: >-
+      This policy generates a ConfigMap when a deployment with specific
+      labels is created, providing default application configuration.
+spec:
+  rules:
+  - name: generate-app-config
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+          selector:
+            matchLabels:
+              app-config: required
+    generate:
+      apiVersion: v1
+      kind: ConfigMap
+      name: "{{request.object.metadata.name}}-config"
+      namespace: "{{request.object.metadata.namespace}}"
+      synchronize: true
+      data:
+        data:
+          # Default application configuration
+          APP_ENV: "{{request.object.metadata.namespace}}"
+          LOG_LEVEL: "info"
+          METRICS_ENABLED: "true"
+          CONFIG_VERSION: "1.0"
+          # Add application-specific configuration based on labels
+          APP_NAME: "{{request.object.metadata.name}}"
+          APP_PORT: "{{request.object.spec.template.spec.containers[0].ports[0].containerPort || '8080'}}" 

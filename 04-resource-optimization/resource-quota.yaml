@@ -1,0 +1,81 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: generate-resource-quota
+  annotations:
+    policies.kyverno.io/title: Generate Resource Quotas
+    policies.kyverno.io/category: Resource Management
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ResourceQuota
+    policies.kyverno.io/description: >-
+      This policy automatically generates ResourceQuota resources
+      for new namespaces based on environment labels.
+spec:
+  rules:
+  - name: generate-dev-quota
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+          selector:
+            matchLabels:
+              environment: dev
+    generate:
+      apiVersion: v1
+      kind: ResourceQuota
+      name: default-quota
+      synchronize: true
+      data:
+        spec:
+          hard:
+            cpu: "4"
+            memory: 8Gi
+            pods: "10"
+            services: "5"
+            persistentvolumeclaims: "5"
+            requests.storage: 20Gi
+
+  - name: generate-prod-quota
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+          selector:
+            matchLabels:
+              environment: prod
+    generate:
+      apiVersion: v1
+      kind: ResourceQuota
+      name: default-quota
+      synchronize: true
+      data:
+        spec:
+          hard:
+            cpu: "16"
+            memory: 32Gi
+            pods: "50"
+            services: "20"
+            persistentvolumeclaims: "20"
+            requests.storage: 100Gi
+
+  - name: validate-quota-compliance
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          - Deployment
+          - StatefulSet
+    validate:
+      message: "Resource requests exceed namespace quota"
+      deny:
+        conditions:
+          all:
+          - key: "{{ request.object.spec.containers[*].resources.requests.cpu || '0' }}"
+            operator: GreaterThan
+            value: "{{ lookup('v1/namespaces/{{request.namespace}}/resourcequotas/default-quota','spec.hard.cpu') }}"
+          - key: "{{ request.object.spec.containers[*].resources.requests.memory || '0' }}"
+            operator: GreaterThan
+            value: "{{ lookup('v1/namespaces/{{request.namespace}}/resourcequotas/default-quota','spec.hard.memory') }}" 

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exceeding-app
+  namespace: resource-test
+  labels:
+    app: exceeding-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: exceeding-app
+  template:
+    metadata:
+      labels:
+        app: exceeding-app
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "2Gi"    # Exceeds the recommended request/limit ratio
+            cpu: "2"
+          limits:
+            memory: "6Gi"    # Exceeds the maximum allowed limit
+            cpu: "4"         # Exceeds the maximum allowed limit 

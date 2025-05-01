@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsigned-app
+  labels:
+    app: unsigned-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unsigned-app
+  template:
+    metadata:
+      labels:
+        app: unsigned-app
+    spec:
+      containers:
+      - name: app
+        image: docker.io/library/nginx:latest  # This should be blocked by the policy
+        ports:
+        - containerPort: 80 

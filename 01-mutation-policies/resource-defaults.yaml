@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: set-resource-defaults
+  annotations:
+    policies.kyverno.io/title: Set Resource Defaults
+    policies.kyverno.io/category: Resource Limits
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy sets default resource requests and limits for containers
+      that don't specify them.
+spec:
+  rules:
+  - name: set-container-resources
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    mutate:
+      patchStrategicMerge:
+        spec:
+          containers:
+            - (name): "*"
+              resources:
+                requests:
+                  +(memory): "64Mi"
+                  +(cpu): "250m"
+                limits:
+                  +(memory): "128Mi"
+                  +(cpu): "500m" 

@@ -1,0 +1,71 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-resource-limits
+  annotations:
+    policies.kyverno.io/title: Enforce Resource Limits
+    policies.kyverno.io/category: Resource Management
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy enforces resource limits on containers and
+      ensures proper resource requests to limits ratio.
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+  - name: validate-limits
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "Container resource limits are required and must be within allowed ranges"
+      pattern:
+        spec:
+          containers:
+          - resources:
+              limits:
+                memory: "<=4Gi"
+                cpu: "<=2"
+              requests:
+                memory: ">0"
+                cpu: ">0"
+
+  - name: check-requests-limits-ratio
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "Resource requests must be at least 50% of limits"
+      deny:
+        conditions:
+          any:
+          - key: "{{ divide(request.object.spec.containers[*].resources.requests.cpu, request.object.spec.containers[*].resources.limits.cpu) }}"
+            operator: LessThan
+            value: 0.5
+          - key: "{{ divide(request.object.spec.containers[*].resources.requests.memory, request.object.spec.containers[*].resources.limits.memory) }}"
+            operator: LessThan
+            value: 0.5
+
+  - name: set-default-resources
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    mutate:
+      patchStrategicMerge:
+        spec:
+          containers:
+            - (name): "*"
+              resources:
+                +(requests):
+                  memory: "64Mi"
+                  cpu: "100m"
+                +(limits):
+                  memory: "128Mi"
+                  cpu: "200m" 

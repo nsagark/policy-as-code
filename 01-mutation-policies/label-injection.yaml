@@ -1,0 +1,28 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-labels
+  annotations:
+    policies.kyverno.io/title: Add Labels
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy automatically adds labels to pods based on their namespace
+      and other metadata.
+spec:
+  rules:
+  - name: add-labels
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            environment: "{{request.object.metadata.namespace}}"
+            team: "platform"
+            app.kubernetes.io/managed-by: "kyverno"
+            timestamp: "{{time_now_utc()}}" 
