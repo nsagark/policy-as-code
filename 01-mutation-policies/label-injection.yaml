@@ -25,4 +25,3 @@ spec:
             environment: "{{request.object.metadata.namespace}}"
             team: "platform"
             app.kubernetes.io/managed-by: "kyverno"
-            timestamp: "{{time_now_utc()}}" 

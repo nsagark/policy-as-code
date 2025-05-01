@@ -43,7 +43,7 @@ Expected output will show automatically injected labels:
 ```yaml
 metadata:
   labels:
-    environment: production
+    environment: default
     team: platform
 ```
 
