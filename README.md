@@ -1,4 +1,4 @@
-# Kyverno Workshop - KCD Austin
+# Kyverno Workshop 
 
 Welcome to the Kyverno Workshop! This hands-on workshop will guide you through various Kyverno policy implementations and best practices.
 
