@@ -97,6 +97,8 @@ Deploy your policies from Git:
 kubectl apply -f <path-to-your-policies>
 ```
 
+If deploying the policies via application from Argo CD, sync the policies and ensure they are healthy and synced properly
+
 ## Troubleshooting
 
 If you encounter any issues during the upgrade:
