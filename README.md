@@ -54,7 +54,7 @@ git clone https://github.com/nsagark/policy-as-code
 cd policy-as-code
 git checkout operator-n4k-install
 
-Update the custom changes in the values.yaml for operator if any inside the `nirmata-kyverno-operator` folder.
+Update the custom changes in the `values.yaml` for operator if any inside the `nirmata-kyverno-operator` folder.
 
 # Login to Argo CD
 argocd login <argourl>:<argoport>  --username <user> --password <password> --insecure  # e.g. argocd login 127.0.0.1:8080 --username admin --password password123 --insecure
@@ -68,7 +68,7 @@ After applying the argo application for operator, go to the Argo UI and sync the
 
 #### N4K 1.13.4
 
-Update the custom changes in the values.yaml for the N4K if any inside the `kyverno` folder.
+Update the custom changes in the `values.yaml` for the N4K if any inside the `kyverno` folder.
 
 ```bash
 # Deploy the N4K application. Ensure you have cloned the repositry and in the right branch/folder.
