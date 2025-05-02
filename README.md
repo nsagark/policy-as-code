@@ -26,6 +26,7 @@ Before proceeding with the upgrade, ensure you have backups of:
 ```bash
 kubectl get cpol,cleanpol,ccleanpol,polex -o yaml > allPolBkp.yaml
 kubectl get polr -A -o yaml > bkpPolr.yaml
+kubectl get crd | egrep -i 'kyverno|nirmata|wgp' | awk '{print $1}' | xargs -n1 -I{} kubectl get crd {} -o yaml > kyverno-nirmata-crds-backup.yaml
 ```
 
 ### 2. Delete Existing Installation
