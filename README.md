@@ -53,9 +53,11 @@ Clone this repository and apply the Argo CD application for operator.
 git clone https://github.com/nsagark/policy-as-code
 cd policy-as-code
 git checkout operator-n4k-install
+```
 
 Update the custom changes in the `values.yaml` for operator if any inside the `nirmata-kyverno-operator` folder.
 
+```bash
 # Login to Argo CD
 argocd login <argourl>:<argoport>  --username <user> --password <password> --insecure  # e.g. argocd login 127.0.0.1:8080 --username admin --password password123 --insecure
 
