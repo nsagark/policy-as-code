@@ -1,25 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
-project: default
-source:
-  repoURL: https://github.com/nsagark/policy-as-code
-  path: nirmata-kyverno-operator
-  targetRevision: operator-n4k-install
-destination:
-  server: https://kubernetes.default.svc
-  namespace: nirmata-system
-syncPolicy:
-  syncOptions:
+kind: Application
+metadata:
+  name: kyverno-operator
+  namespace: argocd
+spec:
+  destination:
+    namespace: nirmata-system
+    server: https://kubernetes.default.svc
+  ignoreDifferences:
+  - jsonPointers:
+    - /data/tls.key
+    - /data/tls.crt
+    - /data/ca.crt
+    kind: Secret
+    name: webhook-server-cert
+  - group: security.nirmata.io
+    jsonPointers:
+    - /metadata/annotations
+    kind: KyvernoConfig
+  project: default
+  source:
+    path: nirmata-kyverno-operator
+    repoURL: https://github.com/nsagark/policy-as-code
+    targetRevision: operator-n4k-install
+  syncPolicy:
+    syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
     - RespectIgnoreDifferences=true
-ignoreDifferences:
-  - kind: Secret
-    name: webhook-server-cert
-    jsonPointers:
-      - /data/tls.key
-      - /data/tls.crt
-      - /data/ca.crt
-  - group: security.nirmata.io
-    kind: KyvernoConfig
-    jsonPointers:
-      - /metadata/annotations
