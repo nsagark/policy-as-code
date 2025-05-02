@@ -43,8 +43,7 @@ chmod + x kyverno_cleanup_latest_nk4_1_10.sh
 ./kyverno_cleanup_latest_nk4_1_10.sh /home/user/.kube/config  nirmata-system nirmata-kyverno-operator kyverno
 ```
 
-### 4. Deploying Operator and N4K 1.13.x
-
+### 4. Argo CD Deployment
 #### Nirmata Kyverno Operator
 
 Clone this repository and apply the Argo CD application for operator.
@@ -55,32 +54,31 @@ git clone https://github.com/nsagark/policy-as-code
 cd policy-as-code
 git checkout operator-n4k-install
 
+Update the custom changes in the values.yaml for operator if any inside the `nirmata-kyverno-operator` folder.
+
 # Login to Argo CD
 argocd login <argourl>:<argoport>  --username <user> --password <password> --insecure  # e.g. argocd login 127.0.0.1:8080 --username admin --password password123 --insecure
 
-# Deploy the operation application
+# Deploy the operator application
 kubectl apply -f application-operator.yaml
 
 
 ```
+After applying the argo application for operator, go to the Argo UI and sync the application. Please note that the sync might fail for the first time, but it will be successful in the second attempt. 
 
-#### N4K
+#### N4K 1.13.4
+
+Update the custom changes in the values.yaml for the N4K if any inside the `kyverno` folder.
+
 ```bash
-# Download N4K helm chart
-wget https://github.com/nirmata/kyverno-charts/releases/download/kyverno-3.3.14/kyverno-3.3.14.tgz
-
-# Extract and modify values.yaml as needed
-tar -xzf kyverno-3.3.14.tgz
+# Deploy the N4K application. Ensure you have cloned the repositry and in the right branch/folder.
+kubectl apply -f application-n4k.yaml
 ```
 
-### 5. Argo CD Deployment
+After applying the argo application for N4K, go to the Argo UI and sync the application. 
 
-1. Update your Git repository with the new values.yaml files
-2. Sync the following applications in Argo CD:
-   - Nirmata Kyverno Operator
-   - N4K
 
-### 6. Verify Installation
+### 5. Verify Installation
 
 After the sync is complete, verify that:
 - Nirmata Kyverno Operator is running in the `nirmata-system` namespace
@@ -88,7 +86,7 @@ After the sync is complete, verify that:
 - All pods are in Running state
 - No errors in the logs
 
-### 7. Deploy Policies
+### 6. Deploy Policies
 
 Deploy your policies from Git:
 ```bash
