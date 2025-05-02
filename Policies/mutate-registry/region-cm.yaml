@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ecr-region
-  namespace: kyverno
-data:
-  region: us-west-2
