@@ -116,5 +116,4 @@ If the upgrade fails:
 
 ## Support
 
-For additional support, please contact Nirmata support or refer to the official documentation. 
-
+For additional support, please contact Nirmata support at sagar@nirmata.com or cs@nirmata.com 
