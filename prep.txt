@@ -1,5 +1,0 @@
-I am working on kyverno workshop to demo at KCD austin. I want to create some labs and demo's for the workshop. something similar to below. 
-
-https://github.com/nirmata/kyverno-workshop/tree/main
-
-Specically, i want to create demos for kyverno mutation policy, generation policy, image verification policy using cosign and resource optimation policy. Can you create necessary files needed for the demo's along with the readme. Organize the files and folders neatly for the workshop. 
