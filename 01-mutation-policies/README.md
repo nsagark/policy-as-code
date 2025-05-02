@@ -10,13 +10,11 @@ This section demonstrates how to use Kyverno mutation policies to automatically 
 
 ## Policies Included
 
-1. **Label Injection** (`label-injection.yaml`)
-   - Automatically adds environment and team labels to all pods
-   - Demonstrates using JMESPath expressions for dynamic values
+1. **Label Injection** (`add-labels.yaml`)
+   - Automatically adds a label `foo=bar` to all pods, services, configmaps and secrets
 
 2. **Resource Defaults** (`resource-defaults.yaml`)
-   - Sets default CPU and memory limits/requests for containers
-   - Prevents resource exhaustion
+   - Sets default CPU/memory requests for containers
 
 3. **Pod Security** (`pod-security.yaml`)
    - Adds security context settings
@@ -26,7 +24,7 @@ This section demonstrates how to use Kyverno mutation policies to automatically 
 
 1. Apply the label injection policy:
 ```bash
-kubectl apply -f label-injection.yaml
+kubectl apply -f add-labels.yaml
 ```
 
 2. Create a test pod:
@@ -43,8 +41,7 @@ Expected output will show automatically injected labels:
 ```yaml
 metadata:
   labels:
-    environment: default
-    team: platform
+    foo: bar
 ```
 
 ## Cleanup
