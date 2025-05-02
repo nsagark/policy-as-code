@@ -1,3 +1,4 @@
+apiVersion: argoproj.io/v1alpha1
 project: default
 source:
   repoURL: https://github.com/nsagark/policy-as-code
