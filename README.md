@@ -43,19 +43,20 @@ chmod + x kyverno_cleanup_latest_nk4_1_10.sh
 ./kyverno_cleanup_latest_nk4_1_10.sh /home/user/.kube/config  nirmata-system nirmata-kyverno-operator kyverno
 ```
 
-### 4. Prepare New Helm Charts
+### 4. Deploying Operator and N4K 1.13.x
 
 #### Nirmata Kyverno Operator
+
+Download this repository and apply the Argo CD application for operator.
 ```bash
-# Add Nirmata Helm repository
-helm repo add nirmata https://nirmata.github.io/kyverno-charts/
-helm repo update
 
-# Download the new helm chart
-wget https://github.com/nirmata/kyverno-charts/releases/download/nirmata-kyverno-operator-v0.5.9/nirmata-kyverno-operator-v0.5.9.tgz
+# Login to Argo CD
+argocd login <argourl>:<argoport>  --username <user> --password <password> --insecure  # e.g. argocd login 127.0.0.1:8080 --username admin --password password123 --insecure
 
-# Extract and modify values.yaml as needed
-tar -xzf nirmata-kyverno-operator-v0.5.9.tgz
+# Deploy the operation application
+kubectl apply -f application-operator.yaml
+
+
 ```
 
 #### N4K
