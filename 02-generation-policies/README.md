@@ -16,7 +16,7 @@ The policy `add-network-policy.yaml` creates a default-deny NetworkPolicy whenev
 
 1. Apply the policy:
 ```bash
-kubectl apply -f add-network-policy.yaml
+kubectl apply -f add-network-policy/add-network-policy.yaml
 ```
 
 2. Create a new namespace:

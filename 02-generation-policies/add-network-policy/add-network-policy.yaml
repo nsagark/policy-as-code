@@ -14,7 +14,7 @@ metadata:
       default deny all ingress and egress traffic to the Pods in the Namespace. Application
       teams can then configure additional NetworkPolicy resources to allow desired traffic
       to application Pods from select sources. This policy will create a new NetworkPolicy resource
-      named `default-deny` which will deny all traffic anytime a new Namespace is created.      
+      named `default-deny` which will deny all traffic anytime a new Namespace is created.
 spec:
   rules:
   - name: default-deny
@@ -37,4 +37,3 @@ spec:
           policyTypes:
           - Ingress
           - Egress
-
