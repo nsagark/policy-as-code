@@ -1,6 +1,6 @@
 # Nirmata Kyverno Operator and N4K Upgrade Guide
 
-This guide provides step-by-step instructions for upgrading Nirmata Kyverno Operator and N4K (Nirmata Enterprise for Kyverno) from v1.11.4-n4k.nirmata.9 to latest version of 1.13 via Argo CD
+This guide provides step-by-step instructions for upgrading Nirmata Kyverno Operator and N4K (Nirmata Enterprise for Kyverno) from v1.11.4-n4k.nirmata.9 to v1.13.4 via Argo CD
 
 ## Prerequisites
 
