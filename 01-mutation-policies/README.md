@@ -13,10 +13,10 @@ This section demonstrates how to use Kyverno mutation policies to automatically 
 1. **Label Injection** (`add-labels.yaml`)
    - Automatically adds a label `foo=bar` to all pods, services, configmaps and secrets
 
-2. **Resource Defaults** (`resource-defaults.yaml`)
+2. **Resource Defaults** (`add-default-resources.yaml`)
    - Sets default CPU/memory requests for containers
 
-3. **Pod Security** (`pod-security.yaml`)
+3. **Pod Security** (`add-default-securitycontext.yaml`)
    - Adds security context settings
    - Sets non-root user requirements
 
@@ -24,7 +24,7 @@ This section demonstrates how to use Kyverno mutation policies to automatically 
 
 1. Apply the label injection policy:
 ```bash
-kubectl apply -f add-labels.yaml
+kubectl apply -f add-labels/add-labels.yaml
 ```
 
 2. Create a test pod:
