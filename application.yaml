@@ -1,0 +1,24 @@
+project: default
+source:
+  repoURL: https://github.com/nsagark/policy-as-code
+  path: nirmata-kyverno-operator
+  targetRevision: operator-n4k-install
+destination:
+  server: https://kubernetes.default.svc
+  namespace: nirmata-system
+syncPolicy:
+  syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+    - RespectIgnoreDifferences=true
+ignoreDifferences:
+  - kind: Secret
+    name: webhook-server-cert
+    jsonPointers:
+      - /data/tls.key
+      - /data/tls.crt
+      - /data/ca.crt
+  - group: security.nirmata.io
+    kind: KyvernoConfig
+    jsonPointers:
+      - /metadata/annotations
