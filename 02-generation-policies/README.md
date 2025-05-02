@@ -1,76 +1,60 @@
-# Kyverno Generate Policies Workshop
+# Network Policy Generation Policy
 
-This workshop covers different types of generate policies in Kyverno. Generate policies are used to create new Kubernetes resources based on certain triggers.
+This policy automatically generates a default-deny NetworkPolicy for all new namespaces, implementing a zero-trust networking model by default.
 
-## Workshop Structure
+## Policy Overview
 
-1. **Basic Generate Policies**
-   - ConfigMap Generation
-   - Secret Generation
-   - NetworkPolicy Generation
+The policy `add-network-policy.yaml` creates a default-deny NetworkPolicy whenever a new namespace is created. This ensures that all new namespaces start with a secure networking configuration.
 
-2. **Advanced Generate Policies**
-   - Namespace Provisioning
-   - Resource Synchronization
-   - Cross-Namespace Resource Generation
+## How It Works
 
-## Prerequisites
+1. The policy watches for new namespace creation events
+2. When a new namespace is created, it automatically generates a NetworkPolicy named `default-deny`
+3. The generated NetworkPolicy blocks all ingress and egress traffic by default
 
-- Kubernetes cluster with Kyverno installed
-- kubectl configured to access the cluster
-- Basic understanding of Kubernetes resources
+## Usage
 
-## Workshop Exercises
-
-### 1. Basic Generate Policies
-
-#### 1.1 ConfigMap Generation
-- Policy: `configmap-generator.yaml`
-- Test: `tests/configmap-generator-test.yaml`
-- Description: Generates a ConfigMap when a deployment with specific labels is created
-
-#### 1.2 Secret Generation
-- Policy: `secret-generator.yaml`
-- Test: `tests/secret-generator-test.yaml`
-- Description: Generates a Secret when a namespace with specific labels is created
-
-#### 1.3 NetworkPolicy Generation
-- Policy: `network-policy-generator.yaml`
-- Test: `tests/network-policy-generator-test.yaml`
-- Description: Generates a NetworkPolicy for all new namespaces
-
-### 2. Advanced Generate Policies
-
-#### 2.1 Namespace Provisioning
-- Policy: `namespace-provisioner.yaml`
-- Test: `tests/namespace-provisioner-test.yaml`
-- Description: Creates a complete set of resources when a new namespace is created
-
-#### 2.2 Resource Synchronization
-- Policy: `resource-sync.yaml`
-- Test: `tests/resource-sync-test.yaml`
-- Description: Synchronizes resources across namespaces
-
-## Testing
-
-Each policy includes:
-- Kyverno test files
-- Chainsaw test files
-- Sample resources to trigger the policies
-
-## Running Tests
-
-1. Kyverno Tests:
+1. Apply the policy:
 ```bash
-kyverno test .
+kubectl apply -f add-network-policy.yaml
 ```
 
-2. Chainsaw Tests:
+2. Create a new namespace:
 ```bash
-chainsaw test --test-dir tests/
+kubectl create ns test-namespace
 ```
 
-## Additional Resources
+3. Verify the NetworkPolicy was created:
+```bash
+kubectl get netpol -n test-namespace
+```
 
-- [Kyverno Documentation](https://kyverno.io/docs/)
-- [Generate Rules Documentation](https://kyverno.io/docs/writing-policies/generate/) 
+Expected output:
+```
+NAME           POD-SELECTOR   AGE
+default-deny   <none>         8s
+```
+
+## Policy Details
+
+The policy:
+- Applies to all new namespaces
+- Creates a NetworkPolicy named `default-deny`
+- Implements a zero-trust model by default
+- Can be customized through namespace labels
+
+## Security Benefits
+
+- Enforces network isolation by default
+- Prevents accidental exposure of services
+- Implements the principle of least privilege
+- Provides a secure baseline for new namespaces
+
+## Cleanup
+
+To remove the policy:
+```bash
+kubectl delete -f add-network-policy.yaml
+```
+
+Note: This will not remove existing NetworkPolicies from namespaces. 
