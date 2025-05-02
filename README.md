@@ -47,8 +47,13 @@ chmod + x kyverno_cleanup_latest_nk4_1_10.sh
 
 #### Nirmata Kyverno Operator
 
-Download this repository and apply the Argo CD application for operator.
+Clone this repository and apply the Argo CD application for operator.
 ```bash
+
+# Cloning the repository
+git clone https://github.com/nsagark/policy-as-code
+cd policy-as-code
+git checkout operator-n4k-install
 
 # Login to Argo CD
 argocd login <argourl>:<argoport>  --username <user> --password <password> --insecure  # e.g. argocd login 127.0.0.1:8080 --username admin --password password123 --insecure
