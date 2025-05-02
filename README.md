@@ -30,16 +30,17 @@ kubectl get polr -A -o yaml > bkpPolr.yaml
 
 ### 2. Delete Existing Installation
 
-Remove the current versions of:
+Remove the current versions of below in Argo CD
 - Nirmata Kyverno Operator
 - N4K
 
 ### 3. Cleanup
 
-Run the cleanup script to ensure all related resources are removed:
+Run the cleanup script to from [here](https://github.com/nirmata/nirmata-scripts/tree/main/kyverno_nirmata_cleaunp_new) to ensure all related resources from previous versions are removed:
 ```bash
 # Run cleanup script
-./cleanup-script.sh
+chmod + x kyverno_cleanup_latest_nk4_1_10.sh
+./kyverno_cleanup_latest_nk4_1_10.sh /home/user/.kube/config  nirmata-system nirmata-kyverno-operator kyverno
 ```
 
 ### 4. Prepare New Helm Charts
