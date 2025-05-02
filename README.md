@@ -22,11 +22,11 @@ Before proceeding with the upgrade, ensure you have backups of:
 - Nirmata Kyverno Operator CRDs
 - PolicyReports (Optional)
 
-  ```bash
-  kubectl get cpol,cleanpol,ccleanpol,polex -o yaml > allPolBkp.yaml
-  kubectl get polr -A -o yaml > bkpPolr.yaml
 
-  ```
+```bash
+kubectl get cpol,cleanpol,ccleanpol,polex -o yaml > allPolBkp.yaml
+kubectl get polr -A -o yaml > bkpPolr.yaml
+```
 
 ### 2. Delete Existing Installation
 
