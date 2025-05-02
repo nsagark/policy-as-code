@@ -1,6 +1,6 @@
 # Image Verification Policies
 
-This section demonstrates how to use Kyverno to verify container images using cosign signatures and attestations.
+This section demonstrates how to use Kyverno to verify container images using cosign signatures and attestations. Using the Cosign project, OCI images may be signed to ensure supply chain security is maintained
 
 ## Prerequisites
 

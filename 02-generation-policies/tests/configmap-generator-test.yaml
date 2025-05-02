@@ -1,0 +1,13 @@
+name: configmap-generator-test
+policies:
+  - configmap-generator.yaml
+resources:
+  - deployment.yaml
+variables: null
+results:
+  - policy: generate-app-config
+    rule: generate-app-config
+    resource: Deployment
+    kind: Deployment
+    result: pass
+    patchedResource: null 

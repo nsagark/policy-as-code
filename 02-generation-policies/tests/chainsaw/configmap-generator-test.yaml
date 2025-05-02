@@ -1,0 +1,19 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: configmap-generator-test
+spec:
+  steps:
+  - name: apply-policy
+    apply:
+      - file: ../configmap-generator.yaml
+  - name: create-deployment
+    apply:
+      - file: ../deployment.yaml
+  - name: verify-configmap
+    assert:
+      - file: verify-configmap.yaml
+  - name: cleanup
+    delete:
+      - file: ../deployment.yaml
+      - file: ../configmap-generator.yaml 
