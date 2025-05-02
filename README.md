@@ -1,12 +1,12 @@
 # Nirmata Kyverno Operator and N4K Upgrade Guide
 
-This guide provides step-by-step instructions for upgrading Nirmata Kyverno Operator and N4K (Nirmata Enterprise for Kyverno) from v1.11.4-n4k.nirmata.9 to v1.13.x.
+This guide provides step-by-step instructions for upgrading Nirmata Kyverno Operator and N4K (Nirmata Enterprise for Kyverno) from v1.11.4-n4k.nirmata.9 to latest version of 1.13 via Argo CD
 
 ## Prerequisites
 
 - Access to the Kubernetes cluster
 - Argo CD access
-- Helm CLI installed
+- Argo CD CLI 
 - Backup of existing resources
 
 ## Upgrade Steps
@@ -20,6 +20,13 @@ Before proceeding with the upgrade, ensure you have backups of:
 - PolicyExceptions
 - Kyverno CRDs
 - Nirmata Kyverno Operator CRDs
+- PolicyReports (Optional)
+
+  ```bash
+  kubectl get cpol,cleanpol,ccleanpol,polex -o yaml > allPolBkp.yaml
+  kubectl get polr -A -o yaml > bkpPolr.yaml
+
+  ```
 
 ### 2. Delete Existing Installation
 
