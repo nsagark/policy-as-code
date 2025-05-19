@@ -40,8 +40,8 @@ Remove the current versions of below in Argo CD
 Run the cleanup script to from [here](https://github.com/nirmata/nirmata-scripts/tree/main/kyverno_nirmata_cleaunp_new) to ensure all related resources from previous versions are removed:
 ```bash
 # Run cleanup script
-chmod + x kyverno_cleanup_latest_nk4_1_10.sh
-./kyverno_cleanup_latest_nk4_1_10.sh /home/user/.kube/config  nirmata-system nirmata-kyverno-operator kyverno
+chmod + x cleanup-kyverno.sh
+./cleanup-kyverno.sh my-cluster nirmata kyverno
 ```
 
 ### 4. Argo CD Deployment
