@@ -8,7 +8,6 @@ nctl scan kubernetes --cluster --continue-on-fail --details --policies <path-to-
 
 e.g.
 nctl scan kubernetes --cluster --continue-on-fail --details --policies /tmp/mytest -o polr >> clusteroutput.json
-
 nctl scan kubernetes --cluster --continue-on-fail --details --policies /tmp/mytest -o polr >> clusteroutput.yaml
 ```
 
