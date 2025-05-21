@@ -83,8 +83,10 @@ chmod +x myscript.py
 
 3. Use wildcards for namespace exclusions:
 ```bash
-./myscript.py clusteroutput.yaml kyverno* *test* nirmata*
+./myscript.py clusteroutput.yaml "kyverno*" "*test*" "nirmata*"
 ```
+
+**Note**: Namespaces having wildcard characters must be included in double quotes 
 
 ### Output Format
 
